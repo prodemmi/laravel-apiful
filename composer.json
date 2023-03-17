@@ -1,0 +1,59 @@
+{
+  "name": "prodemmi/laravel-apiful",
+  "description": "Laravel Apiful is a full customisable package for api responses.",
+  "type": "package",
+  "license": "MIT",
+  "version": "0.5.0",
+  "homepage": "https://github.com/prodemmi/laravel-apiful",
+  "keywords": [
+    "apiful",
+    "laravel",
+    "api",
+    "restful api",
+    "response",
+    "api response",
+    "laravel response",
+    "laravel response helper",
+    "laravel api response",
+    "laravel api response helper",
+    "laravel api helper"
+  ],
+  "authors": [
+    {
+      "name": "Emad Malekpour",
+      "email": "prodemmi@gmail.com",
+      "homepage": "https://github.com/prodemmi"
+    }
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.1@dev",
+    "orchestra/testbench": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Prodemmi\\Apiful\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Prodemmi\\Apiful\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Prodemmi\\Apiful\\ApifulServiceProvider"
+      ],
+      "aliases": {
+        "Apiful": "Prodemmi\\Apiful\\Facades\\Apiful"
+      }
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit"
+  },
+  "minimum-stability": "dev"
+}
