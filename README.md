@@ -19,7 +19,7 @@ Laravel Apiful is a fully customizable package for building API responses easily
 
 # Introduction
 
-Sometimes you need to send your api responses legally.
+Sometimes you need to send your API responses legally.
 
 ```php
 public function index(Request $request)
@@ -37,7 +37,7 @@ public function index(Request $request)
 }
 ```
 
-And response always is like this:
+And the response always is like this:
 
 ```json
 {
@@ -92,7 +92,7 @@ Types of responses are:
 
 ### exception( Throwable $exception )
 
-You could pass the exception to the apiful and will return response based on ExceptionDecorator
+You could pass the exception to the apiful and will return a response based on ExceptionDecorator
 
 ```php
 public function index(Request $request)
@@ -130,7 +130,7 @@ public function index(Request $request)
 ```
 
 You could set `trace => false` to disable exception tracing in `apiful.php` config file for security reasons.
-Also there is options for `line` and `file` reporting.
+Also, there are options for `line` and `file` reporting.
 
 ```php
 'errors'     => [
@@ -232,21 +232,21 @@ Laravel apiful provide to send entity responses like created/deleted/updated mod
   apiful()->invalidQuery();
 ```
 
-By default apiful use entity messages in `lang` files.To change this messages you could publish apiful `lang` by this command:
+By default apiful uses entity messages in lang files. To change these messages you could publish apiful lang by this command:
+
 ```shell
 php artisan vendor:publish --tag="apiful-lang"
 ```
 
 # Creating Custom Responses
 
-Creating your own responses with apiful is so easy with decorators.
-First of all, run artisan command to create decorator
+Creating your responses with apiful is so easy with decorators. First of all, run the artisan command to create a decorator
 
 ```shell
 php artisan make:decorator MySuccessDecorator
 ```
 
-Decorator will be created in `app/Http/Decorators/MySuccessDecorator.php` you could return everything like:
+The decorator will be created in `app/Http/Decorators/MySuccessDecorator.php`.You could return everything like:
 
 ```php
 
@@ -274,7 +274,7 @@ class MySuccessDecorator implements ApifulDecorator
 }
 ```
 
-And after that you should change success decoration in config file:
+And after that, you should change the success decoration in the config file:
 
 ```php
 'decorators' => [
@@ -285,7 +285,7 @@ And after that you should change success decoration in config file:
 ]
 ```
 
-You could change decorations for error, exception, pagination or add new decoration:
+You could change decorations for error, exception, pagination, or add new decorations:
 
 ```php
 'decorators' => [
@@ -307,8 +307,7 @@ And use it like this:
 
 # Pagination
 
-Maybe you want to response a paginated data and like to have entity data and pagination data seperated.`withPagination( )` method is for this:
-
+Maybe you want to respond a paginated data and like to have entity data and pagination data separated.`withPagination( )` method is for this:
 
 ```php
   return apiful($users)->withPagination();
@@ -326,7 +325,7 @@ Maybe you want to response a paginated data and like to have entity data and pag
 
 # Adding Meta
 
-Sometimes you want to send additional information along with the main data like in dynamic forms.Meta comes into play here:
+Sometimes you want to send additional information along with the data. For example, in dynamic forms. Meta comes into play here:
 
 ### withMeta( array|Closure $meta )
 ```php
