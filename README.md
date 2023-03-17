@@ -4,7 +4,7 @@ Laravel Apiful is a fully customizable package for building API responses easily
 
 # Table of Contents
 
-- [Introduction](#ntroduction)
+- [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
     - [Creating Success Responses](#creating-success-responses)
