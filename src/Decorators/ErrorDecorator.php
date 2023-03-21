@@ -14,7 +14,7 @@ class ErrorDecorator implements ApifulDecorator
         return [
             'status'      => config('apiful.status.error_text'),
             'status_code' => $response['status_code'],
-            'message'     => $response['message'],
+            'message'     => $response['message'] ?? '',
             'errors'      => $response['errors'] ?? [],
             'meta'        => $response['meta'] ?? []
         ];
