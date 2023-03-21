@@ -293,7 +293,7 @@ You could change decorations for error, exception, pagination, or add new decora
     'error'              => \Prodemmi\Apiful\Decorators\ErrorDecorator::class,
     'exception'          => \Prodemmi\Apiful\Decorators\ExceptionDecorator::class,
     'pagination'         => \Prodemmi\Apiful\Decorators\PaginationDecorator::class,
-    'new_decorator'     => \Prodemmi\Apiful\Decorators\NewDecorator::class //  New decoration
+    'new_decorator'      => \Prodemmi\Apiful\Decorators\NewDecorator::class //  New decoration
 ]
 ```
 

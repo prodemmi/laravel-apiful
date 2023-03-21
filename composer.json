@@ -3,7 +3,7 @@
   "description": "Laravel Apiful is a full customisable package for api responses.",
   "type": "package",
   "license": "MIT",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/prodemmi/laravel-apiful",
   "keywords": [
     "apiful",
