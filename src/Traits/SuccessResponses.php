@@ -28,6 +28,6 @@ trait SuccessResponses
         if ( $code >= 300 || $code < 200 )
             throw new InvalidHttpStatusCodeSuccess($code);
 
-        return $this->withStatusCode($code)->withDecorator('success')->send();
+        return $this->clearData()->withStatusCode($code)->withDecorator('success')->send();
     }
 }

@@ -5,6 +5,7 @@ namespace Prodemmi\Apiful\Traits;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Prodemmi\Apiful\Exceptions\InvalidHttpStatusCodeError;
+use Throwable;
 
 trait ErrorResponses
 {
@@ -14,7 +15,10 @@ trait ErrorResponses
      */
     public function error(mixed $errors = null) : JsonResponse
     {
-        return $this->withError($errors)->sendErrorResponse('error');
+        if ( filled($errors) )
+            $this->withError($errors);
+
+        return $this->sendErrorResponse('error');
     }
 
     /**
@@ -26,8 +30,7 @@ trait ErrorResponses
         if ( blank($this->getMessage()) )
             $this->withMessage($exception->getMessage());
 
-        return $this->withError($exception)->sendErrorResponse('exception',
-            Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $this->withError($exception)->sendErrorResponse('exception', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -78,22 +81,21 @@ trait ErrorResponses
     /**
      * @throws InvalidHttpStatusCodeError
      */
-    protected
-    function sendErrorResponse(string $decorator, ?int $code = Response::HTTP_INTERNAL_SERVER_ERROR) : JsonResponse
+    protected function sendErrorResponse(string $decorator, ?int $code = Response::HTTP_INTERNAL_SERVER_ERROR) : JsonResponse
     {
 
         $code = $code ? : $this->getStatusCode();
 
-        if ( $code < Response::HTTP_BAD_REQUEST )
+        if ( $code < 400 )
             throw new InvalidHttpStatusCodeError($code);
 
-        $this->clearData()
-            ->withDecorator($decorator);
+        $this->clearData()->withDecorator($decorator);
 
         if ( filled($code) )
             $this->withStatusCode($code);
 
         return $this->send();
+
     }
 
 }

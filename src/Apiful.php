@@ -3,14 +3,13 @@
 namespace Prodemmi\Apiful;
 
 use Closure;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Traits\Macroable;
 use Prodemmi\Apiful\Traits\ErrorResponses;
-use Illuminate\Contracts\Support\Responsable;
 use Prodemmi\Apiful\Traits\EntityResponses;
+use Illuminate\Contracts\Support\Arrayable;
 use Prodemmi\Apiful\Traits\SuccessResponses;
+use Illuminate\Contracts\Support\Responsable;
 use Prodemmi\Apiful\Exceptions\DecoratorNotFound;
 use Prodemmi\Apiful\Exceptions\InvalidHttpStatusCodeError;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
@@ -63,7 +62,7 @@ class Apiful implements Responsable
 
     public function clearData() : Apiful
     {
-        data_set($this->responseArray, 'data', null);
+        data_set($this->responseArray, 'data', []);
 
         return $this;
     }
@@ -73,7 +72,7 @@ class Apiful implements Responsable
 
         $meta = value($meta);
 
-        if($meta instanceof Arrayable){
+        if ( $meta instanceof Arrayable ) {
 
             data_set($this->responseArray, 'meta', value($meta));
             return $this;
@@ -87,9 +86,7 @@ class Apiful implements Responsable
     public function withError(mixed $errors) : Apiful
     {
 
-        $key = $errors instanceof \Throwable ? 'errors' : 'exceptions';
-
-        data_set($this->responseArray, $key, value($errors));
+        data_set($this->responseArray, 'errors', value($errors));
 
         return $this;
     }
@@ -106,26 +103,6 @@ class Apiful implements Responsable
         $this->decorator = $decorator;
 
         return $this;
-    }
-
-    protected function send() : JsonResponse
-    {
-        $this->updateMessage();
-        $decoratedResponse = $this->reformatWithDecorator($this->decorator);
-
-        return response()->json($decoratedResponse, $this->getStatusCode(), $this->getHeaders());
-    }
-
-    protected function updateMessage() : Apiful
-    {
-
-        $message = $this->getMessage();
-
-        if ( blank($message) )
-            $message = data_get(Response::$statusTexts, $this->getStatusCode());
-
-        return $this->withMessage($message);
-
     }
 
     public function getHeaders() : ?array
@@ -145,7 +122,7 @@ class Apiful implements Responsable
 
     public function getData() : mixed
     {
-        return data_get($this->responseArray, 'data', []);
+        return data_get($this->responseArray, 'data', null);
     }
 
     public function getErrors() : mixed
@@ -158,33 +135,46 @@ class Apiful implements Responsable
         return $this->decorator;
     }
 
-    protected function responseSuccess() : JsonResponse
+    protected function send() : JsonResponse
     {
-        return $this->send();
+        $decoratedResponse = $this->reformatWithDecorator($this->decorator);
+        return response()->json($decoratedResponse, $this->getStatusCode(), $this->getHeaders());
     }
 
     protected function reformatWithDecorator(mixed $decorator) : ?array
     {
-        try {
 
-            $decorator = $decorator ?? $this->decorator;
+        $decorator = $decorator ?? $this->decorator;
 
-            if ( $decorator instanceof ApifulDecorator ) {
+        if ( in_array($decorator, [ 'success', 'error', 'exception', 'pagination' ]) ) {
+
+            return $this->getDecoratorFromString($decorator);
+
+        } else {
+
+            if ( $decorator instanceof ApifulDecorator )
                 return $decorator->toArray($this->responseArray);
-            }
 
-            $configDecorated = config("apiful.decorators.$decorator");
+            if ( !class_exists($decorator) )
+                throw new DecoratorNotFound($decorator);
 
-            if ( $configDecorated ) {
-                return resolve($configDecorated)->toArray($this->responseArray);
-            } else {
-                $decoratorClass = class_exists($decorator) ? ( new ( $decorator ?? $this->decorator ) ) : $decorator;
-                return $decoratorClass->toArray($this->responseArray);
-            }
+            return resolve($decorator)->toArray($this->responseArray);
 
-        } catch ( \Exception $e ) {
-            throw new DecoratorNotFound($decorator);
         }
+
+    }
+
+    protected function getDecoratorFromString(string $decorator)
+    {
+
+        $configDecorated = config("apiful.decorators.$decorator");
+
+        if ( $configDecorated ) {
+            return resolve($configDecorated)->toArray($this->responseArray);
+        }
+
+        throw new DecoratorNotFound($decorator);
+
     }
 
     public function toResponse($request) : JsonResponse
