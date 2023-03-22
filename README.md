@@ -116,7 +116,7 @@ public function index(Request $request)
 ```json
 {
   "status": "error",
-  "status_code": 200,
+  "status_code": 500,
   "meta": [],
   "message": "This is exception message",
   "errors": {
