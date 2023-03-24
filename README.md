@@ -112,6 +112,7 @@ public function index(Request $request)
 
 }
 ```
+Response is :
 
 ```json
 {
@@ -120,9 +121,7 @@ public function index(Request $request)
   "meta": [],
   "message": "This is exception message",
   "errors": {
-    "trace": [
-      ...
-    ],
+    "trace": [...],
     "file": "ApiController.php",
     "line": 21
   }
@@ -179,6 +178,7 @@ Laravel apiful provide to send entity responses like created/deleted/updated mod
 ```php
   apiful()->created();
 ```
+Response is :
 
 ```json
   {
@@ -278,7 +278,7 @@ And after that, you should change the success decoration in the config file:
 
 ```php
 'decorators' => [
-    'success'            => \Prodemmi\Apiful\Decorators\MySuccessDecorator::class,
+    'success'            => \Prodemmi\Apiful\Decorators\MySuccessDecorator::class, // Changed
     'error'              => \Prodemmi\Apiful\Decorators\ErrorDecorator::class,
     'exception'          => \Prodemmi\Apiful\Decorators\ExceptionDecorator::class,
     'pagination'         => \Prodemmi\Apiful\Decorators\PaginationDecorator::class
@@ -319,7 +319,7 @@ Maybe you want to respond a paginated data and like to have entity data and pagi
   "status_code": 200,
   "message": "OK",
   "data": [...],
-  "pagination": ... // Paginations links, current_page, ...
+  "pagination": ... // Pagination links, current_page, ...
 }
 ```
 
@@ -329,7 +329,7 @@ Sometimes you want to send additional information along with the data. For examp
 
 ### withMeta( array|Closure $meta )
 ```php
-  return apiful($user)->withMeta(['fields' => $fields, 'default_values' => $defaultValues]);
+  return apiful($user)->withMeta(['labels' => $labels, 'default_values' => $defaultValues]);
 ```
 
 ```json
@@ -339,7 +339,7 @@ Sometimes you want to send additional information along with the data. For examp
   "message": "OK",
   "data": [...],
   "meta": {
-    "fields": {
+    "labels": {
       "username": "Username",
       "first_name": "First Name",
       "last_name": "Last Name",
