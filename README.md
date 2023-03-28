@@ -417,4 +417,4 @@ Feel free to share your ideas or submit an issue just please create a pull reque
 
 # License
 
-The MIT License (MIT). Please see License File for more information. See [license.md](license.md) for more details.
+The MIT License (MIT). Please see [license.md](license.md) for more details.
