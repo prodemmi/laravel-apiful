@@ -19,7 +19,7 @@ Laravel Apiful is a fully customizable package for building API responses easily
 
 # Introduction
 
-Sometimes you need to send your API responses legally.
+Sometimes you need to send your API responses with a special format.
 
 ```php
 public function index(Request $request)
@@ -37,16 +37,14 @@ public function index(Request $request)
 }
 ```
 
-And the response always is like this:
+And the response is this:
 
 ```json
 {
   "status": "success",
   "status_code": 200,
   "message": "Orders List",
-  "data": [
-    ...
-  ],
+  "data": [...],
   "meta": []
 }
 ```
@@ -62,7 +60,7 @@ Types of responses are:
 - Success
 - Error And Exception
 - Entity
-- Custom response uses [Decorators](#decorators)
+- Custom response using [Decorators](#decorators)
 
 # Creating Success Responses
 
